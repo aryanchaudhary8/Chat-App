@@ -4,9 +4,7 @@ import { io } from "socket.io-client";
 
 const SocketContext = createContext();
 
-export const useSocketContext = () => {
-  return useContext(SocketContext);
-};
+export const useSocketContext = () => useContext(SocketContext);
 
 export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
@@ -15,7 +13,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socketInstance = io(window.location.origin, {
+      const socketInstance = io("https://chat-app-f3hu.onrender.com", {
         query: { userId: authUser._id },
         transports: ["websocket", "polling"],
       });
@@ -26,14 +24,7 @@ export const SocketContextProvider = ({ children }) => {
         setOnlineUsers(users);
       });
 
-      return () => {
-        socketInstance.disconnect();
-      };
-    } else {
-      if (socket) {
-        socket.disconnect();
-        setSocket(null);
-      }
+      return () => socketInstance.disconnect();
     }
   }, [authUser]);
 
