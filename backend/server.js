@@ -13,7 +13,7 @@ import { app, server } from "./socket/socket.js";
 
 dotenv.config();
 
-// ✅ correct __dirname in ES modules
+// correct __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -27,12 +27,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
-// ✅ serve frontend correctly
-app.use(express.static(path.join(__dirname, "frontend/dist")));
+// ✅ serve frontend from backend/dist
+app.use(express.static(path.join(__dirname, "dist")));
 
 app.get("*", (req, res) => {
   res.sendFile(
-    path.join(__dirname, "frontend", "dist", "index.html")
+    path.join(__dirname, "dist", "index.html")
   );
 });
 
