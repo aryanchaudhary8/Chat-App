@@ -1,6 +1,7 @@
 import { useAuthContext } from "../../context/AuthContext";
 import { extractTime } from "../../utils/extractTime";
 import useConversation from "../../zustand/useConversation";
+import { getInitialsAvatar } from "../../utils/avatar";
 
 const Message = ({ message }) => {
   const { authUser } = useAuthContext();
@@ -17,29 +18,31 @@ const Message = ({ message }) => {
     ? authUser?.profilePic
     : selectedConversation?.profilePic;
 
+  const fallbackAvatar = getInitialsAvatar(
+    fromMe ? authUser?.username : selectedConversation?.username
+  );
+
   return (
     <div className={`chat ${chatClassName}`}>
       <div className="chat-image avatar">
         <div className="w-10 rounded-full overflow-hidden">
           <img
-            src={profilePic || "/default-avatar.png"}
+            src={profilePic || fallbackAvatar}
             alt="profile"
             loading="lazy"
             onError={(e) => {
               e.currentTarget.onerror = null;
-              e.currentTarget.src = "/default-avatar.png";
+              e.currentTarget.src = fallbackAvatar;
             }}
           />
         </div>
       </div>
 
-      <div
-        className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass} pb-2`}
-      >
+      <div className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass}`}>
         {message.message}
       </div>
 
-      <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
+      <div className="chat-footer opacity-50 text-xs">
         {formattedTime}
       </div>
     </div>
