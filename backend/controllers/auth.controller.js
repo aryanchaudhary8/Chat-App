@@ -19,9 +19,9 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const profilePic =
-      gender === "male"
-        ? `https://avatar.iran.liara.run/public/boy?username=${username}`
-        : `https://avatar.iran.liara.run/public/girl?username=${username}`;
+  gender === "male"
+    ? `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&gender=male`
+    : `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}&gender=female`;
 
     const newUser = new User({
       fullName,
