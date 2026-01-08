@@ -15,9 +15,9 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socketInstance = io("http://localhost:8000", {
+      const socketInstance = io(window.location.origin, {
         query: { userId: authUser._id },
-        withCredentials: true,
+        transports: ["websocket", "polling"],
       });
 
       setSocket(socketInstance);
